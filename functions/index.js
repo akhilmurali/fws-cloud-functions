@@ -10,11 +10,10 @@ exports.fireAlertPublishHandler = functions.pubsub.topic('firealert-topic').onPu
   console.log('The unique ID for the event is', context.eventId);
   let sensorData = {};
   sensorData.sensorId = "esp8266_5EDAF0";
-  var now = new Date();
-  sensorData.timestamp = now.format("dd/MM/yyyy hh:mm TT");
+  sensorData.timestamp = Date().toLocaleString();
   sensorData.mqppm = messageBody.ppm + "ppm";
-  sensorData.temperature = message.temperature + "C";
-  sensorData.humidity = message.humidity;
+  sensorData.temperature = message.temp + "C";
+  sensorData.humidity = message.hum;
   //Store the data into the database:
   admin.database().ref('/sensordata').push(sensorData);
   if (sensorData.ppm > 0) {
